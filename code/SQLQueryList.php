@@ -48,7 +48,9 @@ class SQLQueryList extends ViewableData implements SS_List, SS_Sortable, SS_Limi
 	}
 
 	public function first(){
-		user_error("SQLQueryList doesn't implement first");
+		foreach($this->query->firstRow()->execute() as $row) {
+			return $this->createDataObject($row);
+		}
 	}
 
 	public function last(){
@@ -59,8 +61,15 @@ class SQLQueryList extends ViewableData implements SS_List, SS_Sortable, SS_Limi
 		user_error("SQLQueryList doesn't implement map");
 	}
 
-	public function find($key, $value){
-		user_error("SQLQueryList doesn't implement find");
+	public function find($key, $value) {
+		$SQL_col = sprintf('"%s"', Convert::raw2sql($key));
+
+		$query = clone $this->query;
+		$query = $query->addWhere("$SQL_col = '" . Convert::raw2sql($value) . "'");
+		
+		foreach($query->firstRow()->execute() as $row) {
+			return $this->createOutputObject($row);
+		}
 	}
 
 	public function column($colName = "ID"){
@@ -159,8 +168,18 @@ class SQLQueryList extends ViewableData implements SS_List, SS_Sortable, SS_Limi
 		return $this;
 	}
 
+	public function where($filter) {
+		$this->query->addWhere($filter);
+
+		return $this;
+	}
+
 	public function sql(){
 		return $this->query->sql();
+	}
+
+	public function __clone() {
+		$this->query = clone $this->query;
 	}
 
 }
