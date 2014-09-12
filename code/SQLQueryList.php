@@ -49,7 +49,7 @@ class SQLQueryList extends ViewableData implements SS_List, SS_Sortable, SS_Limi
 
 	public function first(){
 		foreach($this->query->firstRow()->execute() as $row) {
-			return $this->createDataObject($row);
+			return $this->createOutputObject($row);
 		}
 	}
 
