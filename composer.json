@@ -1,23 +1,31 @@
 {
-	"name": "silvershop/silverstripe-sqlquerylist",
-	"description": "Wraps a SilverStripe SQLQuery in a SS_List",
-	"type": "silverstripe-module",
-	"license": "BSD-3-Clause",
-	"keywords": ["silverstripe","list", "query"],
-	"require": {
-		"silverstripe/framework": "^3.1"
-	},
-	"extra": {
-		"installer-name": "sqlquerylist"
-	},
-	"authors": [
-		{
-			"name": "Jeremy Shipman",
-			"homepage": "https://github.com/jedateach",
-			"role": "Developer"
-		}
-	],
-	"branch-alias": {
-		"dev-master": "1.0.x-dev"
-	}
+  "name": "silvershop/silverstripe-sqlquerylist",
+  "description": "Wraps a SilverStripe SQLQuery in a SS_List",
+  "type": "silverstripe-vendormodule",
+  "license": "BSD-3-Clause",
+  "keywords": [
+    "silverstripe",
+    "list",
+    "query"
+  ],
+  "require": {
+    "silverstripe/framework": "^4.0"
+  },
+  "authors": [
+    {
+      "name": "Jeremy Shipman",
+      "homepage": "https://github.com/jedateach",
+      "role": "Developer"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "SilverShop\\SQLQueryList\\": "src/"
+    }
+  },
+  "branch-alias": {
+    "dev-master": "2.0.x-dev"
+  },
+  "prefer-stable": true,
+  "minimum-stability": "dev"
 }
