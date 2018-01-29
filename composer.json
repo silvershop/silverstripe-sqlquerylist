@@ -23,8 +23,10 @@
       "SilverShop\\SQLQueryList\\": "src/"
     }
   },
-  "branch-alias": {
-    "dev-master": "2.0.x-dev"
+  "extra" : {
+    "branch-alias": {
+      "dev-master": "2.x-dev"
+    }
   },
   "prefer-stable": true,
   "minimum-stability": "dev"
