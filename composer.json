@@ -1,11 +1,11 @@
 {
-	"name": "burnbright/silverstripe-sqlquerylist",
+	"name": "silvershop/silverstripe-sqlquerylist",
 	"description": "Wraps a SilverStripe SQLQuery in a SS_List",
 	"type": "silverstripe-module",
 	"license": "BSD-3-Clause",
 	"keywords": ["silverstripe","list", "query"],
 	"require": {
-		"silverstripe/framework": ">=3.1"
+		"silverstripe/framework": "^3.1"
 	},
 	"extra": {
 		"installer-name": "sqlquerylist"
