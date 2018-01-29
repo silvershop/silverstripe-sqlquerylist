@@ -1,5 +1,5 @@
 {
-  "name": "burnbright/silverstripe-sqlquerylist",
+  "name": "silvershop/silverstripe-sqlquerylist",
   "description": "Wraps a SilverStripe SQLQuery in a SS_List",
   "type": "silverstripe-vendormodule",
   "license": "BSD-3-Clause",
@@ -9,7 +9,7 @@
     "query"
   ],
   "require": {
-    "silverstripe/framework": "~4.0"
+    "silverstripe/framework": "^4.0"
   },
   "authors": [
     {
