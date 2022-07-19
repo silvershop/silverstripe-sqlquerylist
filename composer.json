@@ -11,13 +11,6 @@
   "require": {
     "silverstripe/framework": "^4.0"
   },
-  "authors": [
-    {
-      "name": "Jeremy Shipman",
-      "homepage": "https://github.com/jedateach",
-      "role": "Developer"
-    }
-  ],
   "autoload": {
     "psr-4": {
       "SilverShop\\SQLQueryList\\": "src/"
@@ -25,7 +18,7 @@
   },
   "extra" : {
     "branch-alias": {
-      "dev-master": "2.x-dev"
+      "dev-main": "2.x-dev"
     }
   },
   "prefer-stable": true,
