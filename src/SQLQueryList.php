@@ -110,34 +110,34 @@ class SQLQueryList extends ViewableData implements SS_List, Sortable, Limitable
     }
 
     //ArrayAccess
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         user_error("SQLQueryList doesn't implement offsetExists");
     }
 
-    public function offsetGet($offset)
+    public function offsetGet($offset): mixed
     {
         user_error("SQLQueryList doesn't implement offsetGet");
     }
 
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         user_error("SQLQueryList doesn't implement offsetSet");
     }
 
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         user_error("SQLQueryList doesn't implement offsetUnset");
     }
 
     //Countable
-    public function count()
+    public function count(): int
     {
         return $this->query->count();
     }
 
     //IteratorAggregate
-    public function getIterator()
+    public function getIterator(): \Traversable
     {
         return new ArrayIterator($this->toArray());
     }
