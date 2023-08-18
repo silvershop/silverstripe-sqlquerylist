@@ -201,7 +201,7 @@ class SQLQueryList extends ViewableData implements SS_List, Sortable, Limitable
     }
 
     //Limitable
-    public function limit($limit, $offset = 0)
+    public function limit(?int $limit, int $offset = 0): Limitable
     {
         $this->query->setLimit($limit, $offset);
 
