@@ -1,0 +1,4 @@
+/public
+.phpunit.cache
+/vendor
+/status

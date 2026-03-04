@@ -11,6 +11,7 @@ use SilverStripe\Model\ModelData;
 use Traversable;
 use ArrayIterator;
 use Closure;
+use BadMethodCallException;
 use InvalidArgumentException;
 use SilverStripe\Core\Convert;
 use SilverStripe\ORM\Queries\SQLSelect;
@@ -25,6 +26,9 @@ class SQLQueryList extends ModelData implements SS_List
      */
     protected $query;
 
+    /**
+     * @var Closure|null
+     */
     protected $outputClosure;
 
     public function __construct(SQLSelect $query)
@@ -60,17 +64,17 @@ class SQLQueryList extends ModelData implements SS_List
 
     public function toNestedArray(): array
     {
-        user_error("SQLQueryList doesn't implement toNestedArray");
+        throw new BadMethodCallException("SQLQueryList doesn't implement toNestedArray");
     }
 
     public function add($item): void
     {
-        user_error("SQLQueryList doesn't implement add");
+        throw new BadMethodCallException("SQLQueryList doesn't implement add");
     }
 
     public function remove($item): void
     {
-        user_error("SQLQueryList doesn't implement remove");
+        throw new BadMethodCallException("SQLQueryList doesn't implement remove");
     }
 
     public function first(): mixed
@@ -78,16 +82,22 @@ class SQLQueryList extends ModelData implements SS_List
         foreach ($this->query->firstRow()->execute() as $row) {
             return $this->createOutputObject($row);
         }
+
+        return null;
     }
 
     public function last(): mixed
     {
-        user_error("SQLQueryList doesn't implement last");
+        foreach ($this->query->lastRow()->execute() as $row) {
+            return $this->createOutputObject($row);
+        }
+
+        return null;
     }
 
-    public function map($keyField = 'ID', $titleField = 'Title'): Map
+    public function map(string $keyField = 'ID', string $titleField = 'Title'): Map
     {
-        user_error("SQLQueryList doesn't implement map");
+        return new Map($this, $keyField, $titleField);
     }
 
     public function find($key, $value): mixed
@@ -100,85 +110,94 @@ class SQLQueryList extends ModelData implements SS_List
         foreach ($query->firstRow()->execute() as $row) {
             return $this->createOutputObject($row);
         }
+
+        return null;
     }
 
-    public function column($colName = "ID"): array
+    public function column(string $colName = "ID"): array
     {
-        user_error("SQLQueryList doesn't implement column");
+        $result = [];
+        foreach ($this->query->execute() as $row) {
+            $item = $this->createOutputObject($row);
+            if (is_object($item) && method_exists($item, 'getField')) {
+                $result[] = $item->getField($colName);
+            } else {
+                $result[] = is_array($item) ? ($item[$colName] ?? null) : ($item->$colName ?? null);
+            }
+        }
+
+        return $result;
     }
 
     public function columnUnique(string $colName = 'ID'): array
     {
-        user_error("SQLQueryList doesn't implement columnUnique");
+        return array_unique($this->column($colName));
     }
-
 
     public function each($callback): SS_List
     {
-        user_error("SQLQueryList doesn't implement each");
+        throw new BadMethodCallException("SQLQueryList doesn't implement each");
     }
 
     public function canFilterBy(string $by): bool
     {
-        user_error("SQLQueryList doesn't implement canFilterBy");
+        throw new BadMethodCallException("SQLQueryList doesn't implement canFilterBy");
     }
 
     public function filter(...$args): SS_List
     {
-        user_error("SQLQueryList doesn't implement filter");
+        throw new BadMethodCallException("SQLQueryList doesn't implement filter");
     }
 
     public function filterAny(...$args): SS_List
     {
-        user_error("SQLQueryList doesn't implement filterAny");
+        throw new BadMethodCallException("SQLQueryList doesn't implement filterAny");
     }
 
     public function exclude(...$args): SS_List
     {
-        user_error("SQLQueryList doesn't implement exclude");
+        throw new BadMethodCallException("SQLQueryList doesn't implement exclude");
     }
 
     public function excludeAny(...$args): SS_List
     {
-        user_error("SQLQueryList doesn't implement excludeAny");
+        throw new BadMethodCallException("SQLQueryList doesn't implement excludeAny");
     }
 
     public function filterByCallback(callable $callback): SS_List
     {
-        user_error("SQLQueryList doesn't implement filterByCallback");
+        throw new BadMethodCallException("SQLQueryList doesn't implement filterByCallback");
     }
 
     public function byID(mixed $id): mixed
     {
-        user_error("SQLQueryList doesn't implement byID");
+        throw new BadMethodCallException("SQLQueryList doesn't implement byID");
     }
-
 
     public function byIDs(array $ids): SS_List
     {
-        user_error("SQLQueryList doesn't implement byIDs");
+        throw new BadMethodCallException("SQLQueryList doesn't implement byIDs");
     }
-
 
     //ArrayAccess
     public function offsetExists($offset): bool
     {
-        user_error("SQLQueryList doesn't implement offsetExists");
+        throw new BadMethodCallException("SQLQueryList doesn't implement offsetExists");
     }
 
     public function offsetGet($offset): mixed
     {
-        user_error("SQLQueryList doesn't implement offsetGet");
+        throw new BadMethodCallException("SQLQueryList doesn't implement offsetGet");
     }
 
     public function offsetSet($offset, $value): void
     {
-        user_error("SQLQueryList doesn't implement offsetSet");
+        throw new BadMethodCallException("SQLQueryList doesn't implement offsetSet");
     }
 
     public function offsetUnset($offset): void
     {
-        user_error("SQLQueryList doesn't implement offsetUnset");
+        throw new BadMethodCallException("SQLQueryList doesn't implement offsetUnset");
     }
 
     //Countable
@@ -222,7 +241,7 @@ class SQLQueryList extends ModelData implements SS_List
         if ($col) {
             // sort('Name','Desc')
             if (!in_array(strtolower($dir), ['desc', 'asc'])) {
-                user_error('Second argument to sort must be either ASC or DESC');
+                throw new InvalidArgumentException('Second argument to sort must be either ASC or DESC');
             }
 
             $this->query->setOrderBy($col, $dir);
@@ -250,7 +269,7 @@ class SQLQueryList extends ModelData implements SS_List
 
     public function reverse(): SS_List
     {
-        user_error("SQLQueryList doesn't implement reverse");
+        throw new BadMethodCallException("SQLQueryList doesn't implement reverse");
     }
 
     public function limit(?int $limit, int $offset = 0): SS_List
@@ -267,7 +286,7 @@ class SQLQueryList extends ModelData implements SS_List
         return $this;
     }
 
-    public function sql()
+    public function sql(): ?string
     {
         return $this->query->sql();
     }

@@ -1,0 +1,7 @@
+includes:
+    - vendor/silverstripe/standards/rules.neon
+
+parameters:
+    level: 0
+    paths:
+        - src
