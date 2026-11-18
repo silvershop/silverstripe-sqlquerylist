@@ -10,7 +10,7 @@
          failOnRisky="true"
          failOnWarning="true">
     <testsuites>
-        <testsuite name="SQLQueryList Test Suite">
+        <testsuite name="Default">
             <directory>tests</directory>
         </testsuite>
     </testsuites>
