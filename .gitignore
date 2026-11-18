@@ -1,4 +1,6 @@
-/public
 .phpunit.cache
-/vendor
+/composer.lock
+/public
 /status
+/vendor
+/vendor/
